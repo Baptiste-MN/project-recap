@@ -3,266 +3,151 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Matiere Noire · Récap projets</title>
+<title>Matiere Noire · Outils</title>
 <style>
 :root{
   --paper:#F7F7F5; --ink:#14161A; --ink2:#5C6169; --ink3:#8C9199;
   --rule:#DDDEDA; --rule2:#EDEEEA; --card:#FFFFFF;
-  --g1:#1F8A4C; --g2:#D3EEDD; --g2t:#1D6B3F; --y:#F5E6AE; --yt:#7A5B00; --r:#F6CFC9; --rt:#9E2B1E;
+  --live:#2F6F4F; --warn:#B4711E; --stop:#A63A2B;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --sans:"Helvetica Neue",Inter,system-ui,sans-serif;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;
+  min-height:100vh;display:flex;flex-direction:column}
 button{font:inherit;color:inherit}
-header{padding:26px 24px 16px;max-width:920px;margin:0 auto;display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
-h1{margin:0;font-size:13px;letter-spacing:.3em;text-transform:uppercase;font-weight:600}
-h1 small{display:block;letter-spacing:.06em;font-size:11px;font-weight:400;color:var(--ink3);
-  text-transform:none;margin-top:5px;font-family:var(--mono)}
-.spacer{flex:1}
-.who{font-family:var(--mono);font-size:11px;color:var(--ink3)}
-.btn{border:1px solid var(--rule);background:var(--card);border-radius:3px;padding:6px 12px;cursor:pointer;font-size:13px}
+a{color:inherit;text-decoration:none}
+
+header{padding:44px 26px 0;max-width:940px;width:100%;margin:0 auto}
+.mark{font-size:12px;letter-spacing:.34em;text-transform:uppercase;font-weight:600;margin:0}
+.mark small{display:block;letter-spacing:.08em;font-size:11px;font-weight:400;color:var(--ink3);
+  text-transform:none;margin-top:6px;font-family:var(--mono)}
+main{padding:34px 26px 60px;max-width:940px;width:100%;margin:0 auto;flex:1}
+
+h2{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);font-weight:600;
+  margin:0 0 12px;display:flex;align-items:center;gap:10px}
+h2::after{content:'';flex:1;height:1px;background:var(--rule)}
+section{margin-bottom:34px}
+
+.tools{display:grid;gap:11px;grid-template-columns:repeat(auto-fit,minmax(268px,1fr))}
+.tool{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:17px 18px;
+  display:block;transition:border-color .13s,transform .13s}
+.tool:hover{border-color:var(--ink);transform:translateY(-1px)}
+.tool .t{font-size:15px;font-weight:500;margin-bottom:3px;display:flex;align-items:baseline;gap:8px}
+.tool .d{font-size:13px;color:var(--ink2)}
+.tool .m{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink3);margin-top:9px}
+.tool.off{opacity:.45;pointer-events:none}
+.pill{font-family:var(--mono);font-size:9px;letter-spacing:.07em;text-transform:uppercase;
+  border:1px solid var(--rule);border-radius:2px;padding:1px 6px;color:var(--ink3)}
+.pill.k{border-color:var(--warn);color:var(--warn)}
+
+.auth{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:17px 18px;
+  display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.auth .who{font-family:var(--mono);font-size:11px;color:var(--ink3);flex:1}
+.btn{border:1px solid var(--rule);background:var(--paper);border-radius:3px;padding:6px 13px;cursor:pointer;font-size:13px}
 .btn:hover{border-color:var(--ink3)}
 .btn.p{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-main{max-width:920px;margin:0 auto;padding:0 24px 60px}
-.msg{font-family:var(--mono);font-size:11px;color:var(--ink3);margin:0 0 14px}
+.err{color:var(--stop);font-size:12px;width:100%;margin:0}
 
-.card{background:var(--card);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
-.row{display:grid;grid-template-columns:1fr 104px 104px 58px;align-items:center;gap:10px;
-  padding:13px 16px;border-bottom:1px solid var(--rule2);cursor:pointer;transition:background .1s}
-.row:hover{background:#FAFAF8}
-.row.head{cursor:default;background:var(--card);font-size:10px;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--ink3);font-weight:500;padding:10px 16px}
-.row.head:hover{background:var(--card)}
-.row.open{background:#FAFAF8}
-.nom{font-weight:500}
-.nom small{display:block;font-family:var(--mono);font-size:10px;color:var(--ink3);font-weight:400;margin-top:2px}
-.c{text-align:center}
-.pill{display:inline-block;min-width:66px;text-align:center;padding:4px 9px;border-radius:20px;
-  font-family:var(--mono);font-size:12.5px;font-weight:600;letter-spacing:.01em}
-.m90{background:var(--g1);color:#fff}
-.m80{background:var(--g2);color:var(--g2t)}
-.m70{background:var(--y);color:var(--yt)}
-.m0{background:var(--r);color:var(--rt)}
-.mna{background:var(--rule2);color:var(--ink3);font-weight:400}
-.delta{font-family:var(--mono);font-size:11px;text-align:right}
-.up{color:var(--g1)} .down{color:var(--rt)} .flat{color:var(--ink3)}
-
-.det{display:none;padding:4px 16px 18px;border-bottom:1px solid var(--rule2);background:#FAFAF8}
-.det.open{display:block}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:8px}
-.box{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:11px 13px}
-.box h4{margin:0 0 6px;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3);font-weight:600}
-.box .v{font-family:var(--mono);font-size:17px;letter-spacing:-.01em}
-.box .s{font-size:12px;color:var(--ink2);margin-top:3px}
-.ok{color:var(--g1)} .ko{color:var(--rt)} .wn{color:var(--yt)}
-.bar{height:6px;background:var(--rule2);border-radius:3px;overflow:hidden;margin-top:8px}
-.bar i{display:block;height:100%}
-.foot{font-size:11px;color:var(--ink3);margin-top:14px;line-height:1.6}
-.leg{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--ink2)}
-.leg span{display:inline-flex;align-items:center;gap:6px}
-.leg i{width:12px;height:12px;border-radius:3px;display:inline-block}
-.empty{padding:40px;text-align:center;color:var(--ink3)}
-@media(max-width:600px){.row{grid-template-columns:1fr 84px 84px 44px;padding:12px 11px}.pill{min-width:56px;font-size:11.5px}}
+footer{border-top:1px solid var(--rule);padding:16px 26px;max-width:940px;width:100%;margin:0 auto;
+  font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--ink3);
+  display:flex;gap:16px;flex-wrap:wrap}
+@media(max-width:600px){header{padding-top:30px}main{padding-top:26px}}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Récap projets<small id="sub">projets actifs</small></h1>
-  <span class="spacer"></span>
-  <span class="who" id="who"></span>
-  <button class="btn" id="auth">Se connecter</button>
+  <h1 class="mark">Matiere Noire<small>Outils internes du studio</small></h1>
 </header>
 
 <main>
-  <p class="msg" id="msg">Connexion…</p>
-  <div id="view"></div>
+  <section>
+    <h2>Pour tout le monde</h2>
+    <div class="tools" id="pub"></div>
+  </section>
+
+  <section id="sec-dir">
+    <h2>Direction</h2>
+    <div id="auth-box"></div>
+    <div class="tools" id="dir" style="margin-top:11px"></div>
+  </section>
 </main>
+
+<footer>
+  <span>Matiere Noire · Paris</span>
+  <span id="ft"></span>
+</footer>
 
 <script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import {getDatabase,ref,onValue} from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
 import {getAuth,GoogleAuthProvider,signInWithPopup,signOut,onAuthStateChanged}
   from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+/* ═══ à ajuster si un repo change de nom ═══ */
+const BASE='https://baptiste-mn.github.io';
+const PUBLIC=[
+  {t:'Time tracking',d:'Saisir ses heures, projet par projet.',u:BASE+'/time-matiere-noire/',m:'quotidien · FR / EN'},
+  {t:'Congés',d:'Poser une absence et suivre ses soldes.',u:BASE+'/conges-matiere-noire/',m:'sans connexion'},
+  {t:'Planning',d:'Le planning partagé du studio.',u:BASE+'/planning-matiere-noire/',m:'lecture'},
+  {t:'Notes',d:'Tableau de notes partagé par toute l’équipe.',u:BASE+'/notes-matiere-noire/',m:'sans connexion · FR / EN'},
+];
+const DIRECTION=[
+  {t:'Récap projets',d:'Marge des projets actifs, et son évolution sur 7 jours.',u:BASE+'/project-recap/',m:'lecture seule · en un coup d’œil'},
+  {t:'Rentabilité',d:'Marge par projet, par phase et par personne.',u:BASE+'/dashboard-matiere-noire/',m:'lecture seule'},
+  {t:'Administration',d:'Personnes, projets, devis, CJM, alias.',u:BASE+'/admin-matiere-noire/',m:'écriture · à manier avec soin'},
+];
+
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const carte=(x,off)=>`<a class="tool${off?' off':''}" ${off?'':`href="${esc(x.u)}"`}>
+  <div class="t">${esc(x.t)}${off?'<span class="pill k">verrouillé</span>':''}</div>
+  <div class="d">${esc(x.d)}</div><div class="m">${esc(x.m)}</div></a>`;
+
+document.querySelector('#pub').innerHTML=PUBLIC.map(x=>carte(x,false)).join('');
 
 const CFG={apiKey:"AIzaSyByf4SmnGJvfkkJVFhfINXikb8I8ge5VRU",
   authDomain:"matiere-noire-todo.firebaseapp.com",
   databaseURL:"https://matiere-noire-todo-default-rtdb.europe-west1.firebasedatabase.app",
   projectId:"matiere-noire-todo",storageBucket:"matiere-noire-todo.firebasestorage.app",
   messagingSenderId:"583651643354",appId:"1:583651643354:web:74b78c43316b9d657dfae3"};
-const ADMINS=['baptiste@matiere-noire.paris','felix@matiere-noire.paris',
-              'pierre@matiere-noire.paris','sam@matiere-noire.paris'];
-const ROOT='referentiel';
-const app=initializeApp(CFG), db=getDatabase(app), auth=getAuth(app);
+const auth=getAuth(initializeApp(CFG));
 
-/* Mêmes règles que le dashboard de rentabilité — voir MN_DECISIONS.md */
-const CAPPES=new Set(['CDI','CDD','Alternance','Stage']);   // plafond 8 h/jour
-const HORS_MARGE=new Set(['remboursement','__remise__']);
+/* ═══ Accès direction — à garder identique aux règles Firebase et à conges.html ═══ */
+const ADMINS=[
+  'baptiste@matiere-noire.paris',
+  'felix@matiere-noire.paris',
+  'pierre@matiere-noire.paris',
+  'sam@matiere-noire.paris'
+];
+const estAdmin=u=>!!u&&u.emailVerified&&ADMINS.includes((u.email||'').toLowerCase());
 
-let P={},PE=[],T={},PRIVE={},user=null,ouvert=null,n=0;
-const $=s=>document.querySelector(s);
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const eur=v=>(v==null||isNaN(v))?'—':Math.round(v).toLocaleString('fr-FR')+' €';
-const nb=(v,d=1)=>(v==null||isNaN(v))?'—':Number(v).toLocaleString('fr-FR',{maximumFractionDigits:d});
-const arr=v=>Array.isArray(v)?v:(v&&typeof v==='object'?Object.values(v):[]);
-const pers=id=>arr(PE).find(p=>p.id===id);
-const AUJ=new Date(), J7=new Date(AUJ.getTime()-7*864e5);
-const iso=d=>d.toISOString().slice(0,10);
-
-function cjmAt(id,d){
-  const h=arr((PRIVE.cjm||{})[id]).filter(c=>c.debut&&c.valeur!=null).sort((a,b)=>a.debut<b.debut?-1:1);
-  let v=null; for(const c of h) if(c.debut<=d) v=c.valeur; return v;
-}
-function contratAt(p,d){
-  const per=arr(p.periodes).find(x=>(!x.debut||x.debut<=d)&&(!x.fin||x.fin>=d));
-  return per?per.contrat:(arr(p.periodes)[0]||{}).contrat||'CDI';
-}
-function ca(pid){
-  const d=(PRIVE.devis||{})[pid]||{};
-  if(d.caVendu) return Number(d.caVendu);
-  return arr(d.devis).filter(x=>x.signe!==false&&!x.archive)
-    .reduce((s,x)=>s+arr(x.lignes).reduce((a,l)=>a+(HORS_MARGE.has(l.phase)?0:Number(l.montant)||0),0),0)
-    -(Number(d.remise)||0);
-}
-function vendu(pid){
-  const d=(PRIVE.devis||{})[pid]||{}; let j=0;
-  arr(d.devis).filter(x=>x.signe!==false&&!x.archive).forEach(x=>arr(x.lignes).forEach(l=>{
-    if(HORS_MARGE.has(l.phase)) return;
-    const forf=l.forfait||l.jours==null||!Number(l.jours);
-    if(!forf) j+=Number(l.jours)||0;
-  }));
-  return j;
-}
-/* Coût salarié jusqu'à une date (incluse) : sert à la marge « il y a 7 jours ». */
-function salarie(pid,jusqua){
-  let cout=0,fact=0,brut=0;
-  Object.entries(T).forEach(([mois,gens])=>Object.entries(gens||{}).forEach(([uid,projs])=>{
-    const jours=(projs||{})[pid]; if(!jours) return;
-    const p=pers(uid); if(!p||p.categorie==='overhead') return;
-    Object.entries(jours).forEach(([j,h])=>{
-      if(typeof h!=='number') return;
-      const d=`${mois}-${String(j).padStart(2,'0')}`;
-      if(jusqua&&d>jusqua) return;
-      let tot=0; Object.values(gens[uid]||{}).forEach(pr=>{ if(pr&&typeof pr[j]==='number') tot+=pr[j]; });
-      const f=CAPPES.has(contratAt(p,d))&&tot>8?h*8/tot:h;
-      brut+=h; fact+=f; cout+=f/8*(cjmAt(uid,d)||0);
-    });
-  }));
-  return {cout,fact,brut};
-}
-function direction(pid){
-  const imp=arr(((PRIVE.couts||{})[pid]||{}).direction);
-  const man=((PRIVE.direction||{})[pid])||{};
-  let cout=imp.reduce((s,x)=>s+(Number(x.montant)||0),0);
-  let jours=imp.reduce((s,x)=>s+(Number(x.jours)||0),0);
-  const qui={};
-  Object.entries(man).forEach(([uid,j])=>{
-    const v=Number(j)||0; if(!v) return;
-    cout+=v*(cjmAt(uid,iso(AUJ))||0); jours+=v; qui[uid]=(qui[uid]||0)+v;
-  });
-  return {cout,jours,qui,saisi:cout>0};
-}
-function externes(pid){
-  const l=arr(((PRIVE.couts||{})[pid]||{}).externes);
-  return {cout:l.reduce((s,x)=>s+(Number(x.montant)||0),0),n:l.length,lignes:l};
-}
-function bilan(pid,jusqua){
-  const c=ca(pid), s=salarie(pid,jusqua), d=direction(pid), x=externes(pid);
-  const dv=(PRIVE.devis||{})[pid]||{}, p=P[pid]||{};
-  const horsTT=s.fact/8<1&&(dv.coutExcel||0)>0;
-  const choix=p.sourceCout&&p.sourceCout!=='auto'?p.sourceCout:(horsTT?'excel':'tt');
-  const interne=choix==='excel'?Math.max(0,(dv.coutExcel||0)-d.cout-x.cout):s.cout;
-  const cout=interne+d.cout+x.cout;
-  return {ca:c,cout,interne,s,d,x,marge:c?(c-cout)/c*100:null,proBono:!!p.proBono};
-}
-const classe=m=>m==null?'mna':m>=90?'m90':m>=80?'m80':m>=70?'m70':'m0';
-const pill=m=>`<span class="pill ${classe(m)}">${m==null?'—':Math.round(m)+' %'}</span>`;
-
-/* ── rendu ── */
-function render(){
-  if(!user){ $('#view').innerHTML='<div class="card"><div class="empty">Connectez-vous pour voir le récap.</div></div>'; return; }
-  const rows=Object.values(P).filter(p=>p.statut==='actif'&&!p.archive)
-    .map(p=>({p,now:bilan(p.id,null),avant:bilan(p.id,iso(J7))}))
-    .sort((a,b)=>(a.now.marge??999)-(b.now.marge??999));
-  $('#sub').textContent=`${rows.length} projet${rows.length>1?'s':''} actif${rows.length>1?'s':''} · mise à jour ${AUJ.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})}`;
-  if(!rows.length){ $('#view').innerHTML='<div class="card"><div class="empty">Aucun projet actif.</div></div>'; return; }
-
-  $('#view').innerHTML=`<div class="card">
-    <div class="row head"><div>Projet</div><div class="c">Marge</div><div class="c">Il y a 7 j</div><div style="text-align:right">Évol.</div></div>
-    ${rows.map(({p,now,avant})=>{
-      const dl=(now.marge!=null&&avant.marge!=null)?now.marge-avant.marge:null;
-      const dcl=dl==null||Math.abs(dl)<.5?'flat':dl>0?'up':'down';
-      const txt=dl==null?'':Math.abs(dl)<.5?'=':(dl>0?'▲ ':'▼ ')+Math.abs(Math.round(dl))+' pt';
-      const vj=vendu(p.id), pj=now.s.fact/8;
-      return `<div class="row${ouvert===p.id?' open':''}" data-id="${esc(p.id)}">
-        <div class="nom">${esc(p.nom)}<small>${esc(p.client||'')}${p.client?' · ':''}${eur(now.ca)}</small></div>
-        <div class="c">${now.proBono?'<span class="pill mna">pro bono</span>':pill(now.marge)}</div>
-        <div class="c">${now.proBono?'':pill(avant.marge)}</div>
-        <div class="delta ${dcl}">${txt}</div>
-      </div>
-      <div class="det${ouvert===p.id?' open':''}">${detail(p,now,vj,pj)}</div>`;
-    }).join('')}
-  </div>
-  <div class="leg">
-    <span><i style="background:var(--g1)"></i>90 % et plus</span>
-    <span><i style="background:var(--g2)"></i>80 – 90 %</span>
-    <span><i style="background:var(--y)"></i>70 – 80 %</span>
-    <span><i style="background:var(--r)"></i>moins de 70 %</span>
-  </div>
-  <p class="foot">Marge brute de production : équipe salariée, direction et achats — hors frais de structure.
-    La marge « il y a 7 jours » ne retient que le temps saisi jusqu'au ${J7.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})} ;
-    les coûts direction et achats, qui ne sont pas datés, sont pris à leur valeur actuelle.</p>`;
-  document.querySelectorAll('.row[data-id]').forEach(r=>r.onclick=()=>{ ouvert=ouvert===r.dataset.id?null:r.dataset.id; render(); });
-}
-
-function detail(p,b,vj,pj){
-  const dirQui=Object.entries(b.d.qui).map(([u,j])=>`${esc((pers(u)||{}).nom||u)} ${nb(j)} j`).join(' · ');
-  const ratio=vj?pj/vj:null;
-  const rcl=ratio==null?'':ratio>1?'ko':ratio>.85?'wn':'ok';
-  const bc=ratio==null?'var(--rule)':ratio>1?'#C0463A':ratio>.85?'#D9B23A':'#1F8A4C';
-  return `<div class="grid">
-    <div class="box"><h4>Temps Pierre & Félix</h4>
-      <div class="v ${b.d.saisi?'ok':'ko'}">${b.d.saisi?'✓ saisi':'✗ non saisi'}</div>
-      <div class="s">${b.d.saisi?`${nb(b.d.jours)} j · ${eur(b.d.cout)}${dirQui?'<br>'+dirQui:''}`
-        :'À renseigner dans le dashboard, fiche du projet.'}</div></div>
-    <div class="box"><h4>Achats & prestataires</h4>
-      <div class="v ${b.x.n?'':'wn'}">${b.x.n?eur(b.x.cout):'aucun'}</div>
-      <div class="s">${b.x.n?`${b.x.n} ligne${b.x.n>1?'s':''} saisie${b.x.n>1?'s':''}`
-        :'Rien de saisi — vérifier dans l’admin.'}</div></div>
-    <div class="box"><h4>Temps vendu vs passé</h4>
-      <div class="v ${rcl}">${vj?`${nb(pj)} / ${nb(vj)} j`:`${nb(pj)} j passés`}</div>
-      <div class="s">${ratio==null?'Aucun jour vendu au devis (forfaits uniquement).'
-        :ratio>1?`Dépassement de ${nb(pj-vj)} j`:`${Math.round(ratio*100)} % du vendu consommé`}</div>
-      ${ratio!=null?`<div class="bar"><i style="width:${Math.min(100,ratio*100)}%;background:${bc}"></i></div>`:''}</div>
-    <div class="box"><h4>Chiffres</h4>
-      <div class="v">${eur(b.ca-b.cout)}</div>
-      <div class="s">CA ${eur(b.ca)} · coût ${eur(b.cout)}<br>
-        salariés ${eur(b.interne)} · direction ${eur(b.d.cout)} · achats ${eur(b.x.cout)}</div></div>
-  </div>`;
-}
-
-/* ── données et accès ── */
-function pull(k,fn){
-  onValue(ref(db,ROOT+'/'+k),s=>{ fn(s.val()); if(++n>=4){ $('#msg').textContent=''; render(); } },
-    e=>{ $('#msg').textContent='Accès refusé sur « '+k+' » : '+e.message; });
+function box(u,err){
+  const ok=estAdmin(u);
+  document.querySelector('#auth-box').innerHTML = u
+    ? `<div class="auth"><span class="who">${ok?'Connecté · '+esc(u.email):esc(u.email)+' — accès non autorisé'}</span>
+        <button class="btn" id="out">Se déconnecter</button></div>`
+    : `<div class="auth"><span class="who">Espace réservé à la direction — coûts, marges et administration.</span>
+        <button class="btn p" id="in">Se connecter avec Google</button>
+        ${err?`<p class="err">${esc(err)}</p>`:''}</div>`;
+  const i=document.querySelector('#in'), o=document.querySelector('#out');
+  if(i) i.onclick=async()=>{
+    try{const p=new GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});await signInWithPopup(auth,p);}
+    catch(e){box(null, location.protocol==='file:'
+      ? "Connexion impossible depuis un fichier local : ouvrez la page en ligne."
+      : "Connexion refusée. Utilisez votre compte @matiere-noire.paris.");}
+  };
+  if(o) o.onclick=()=>signOut(auth);
 }
 onAuthStateChanged(auth,u=>{
-  const ok=!!u&&u.emailVerified&&ADMINS.includes((u.email||'').toLowerCase());
-  user=ok?u:null; n=0;
-  $('#who').textContent=u?(ok?u.email:u.email+' — non autorisé'):'';
-  $('#auth').textContent=u?'Se déconnecter':'Se connecter';
-  if(!ok){ $('#msg').textContent=u?'Ce compte n’a pas accès au récap.':''; render(); return; }
-  $('#msg').textContent='Chargement…';
-  pull('projects',v=>P=v||{}); pull('people',v=>PE=v||[]);
-  pull('time',v=>T=v||{}); pull('prive',v=>PRIVE=v||{});
+  const ok=estAdmin(u);
+  box(u);
+  // les outils de direction ne s'affichent que pour les comptes autorisés
+  document.querySelector('#sec-dir').style.display = ok||!u ? '' : '';
+  document.querySelector('#dir').innerHTML = ok ? DIRECTION.map(x=>carte(x,false)).join('') : '';
+  document.querySelector('#ft').textContent = ok ? 'session ouverte' : 'accès direction verrouillé';
 });
-$('#auth').onclick=async()=>{
-  if(auth.currentUser){ await signOut(auth); return; }
-  try{ const p=new GoogleAuthProvider(); p.setCustomParameters({prompt:'select_account'}); await signInWithPopup(auth,p); }
-  catch(e){ $('#msg').textContent=location.protocol==='file:'
-    ?'Connexion impossible en local — ouvre la page en ligne.':'Connexion refusée : '+e.message; }
-};
+box(null);
 </script>
 </body>
 </html>
