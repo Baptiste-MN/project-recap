@@ -28,7 +28,7 @@ main{max-width:920px;margin:0 auto;padding:0 24px 60px}
 .msg{font-family:var(--mono);font-size:11px;color:var(--ink3);margin:0 0 14px}
 
 .card{background:var(--card);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
-.row{display:grid;grid-template-columns:1fr 104px 104px 58px;align-items:center;gap:10px;
+.row{display:grid;grid-template-columns:1fr 110px;align-items:center;gap:10px;
   padding:13px 16px;border-bottom:1px solid var(--rule2);cursor:pointer;transition:background .1s}
 .row:hover{background:#FAFAF8}
 .row.head{cursor:default;background:var(--card);font-size:10px;letter-spacing:.09em;text-transform:uppercase;
@@ -63,7 +63,7 @@ main{max-width:920px;margin:0 auto;padding:0 24px 60px}
 .leg span{display:inline-flex;align-items:center;gap:6px}
 .leg i{width:12px;height:12px;border-radius:3px;display:inline-block}
 .empty{padding:40px;text-align:center;color:var(--ink3)}
-@media(max-width:600px){.row{grid-template-columns:1fr 84px 84px 44px;padding:12px 11px}.pill{min-width:56px;font-size:11.5px}}
+@media(max-width:600px){.row{grid-template-columns:1fr 90px;padding:12px 11px}.pill{min-width:56px;font-size:11.5px}}
 </style>
 </head>
 <body>
@@ -183,23 +183,18 @@ const pill=m=>`<span class="pill ${classe(m)}">${m==null?'—':Math.round(m)+' %
 function render(){
   if(!user){ $('#view').innerHTML='<div class="card"><div class="empty">Connectez-vous pour voir le récap.</div></div>'; return; }
   const rows=Object.values(P).filter(p=>p.statut==='actif'&&!p.archive)
-    .map(p=>({p,now:bilan(p.id,null),avant:bilan(p.id,iso(J7))}))
-    .sort((a,b)=>(a.now.marge??999)-(b.now.marge??999));
+    .map(p=>({p,now:bilan(p.id,null)}))
+    .sort((a,b)=>(a.p.nom||'').localeCompare(b.p.nom||'','fr',{sensitivity:'base'}));
   $('#sub').textContent=`${rows.length} projet${rows.length>1?'s':''} actif${rows.length>1?'s':''} · mise à jour ${AUJ.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})}`;
   if(!rows.length){ $('#view').innerHTML='<div class="card"><div class="empty">Aucun projet actif.</div></div>'; return; }
 
   $('#view').innerHTML=`<div class="card">
-    <div class="row head"><div>Projet</div><div class="c">Marge</div><div class="c">Il y a 7 j</div><div style="text-align:right">Évol.</div></div>
-    ${rows.map(({p,now,avant})=>{
-      const dl=(now.marge!=null&&avant.marge!=null)?now.marge-avant.marge:null;
-      const dcl=dl==null||Math.abs(dl)<.5?'flat':dl>0?'up':'down';
-      const txt=dl==null?'':Math.abs(dl)<.5?'=':(dl>0?'▲ ':'▼ ')+Math.abs(Math.round(dl))+' pt';
+    <div class="row head"><div>Projet</div><div class="c">Marge</div></div>
+    ${rows.map(({p,now})=>{
       const vj=vendu(p.id), pj=now.s.fact/8;
       return `<div class="row${ouvert===p.id?' open':''}" data-id="${esc(p.id)}">
         <div class="nom">${esc(p.nom)}<small>${esc(p.client||'')}${p.client?' · ':''}${eur(now.ca)}</small></div>
         <div class="c">${now.proBono?'<span class="pill mna">pro bono</span>':pill(now.marge)}</div>
-        <div class="c">${now.proBono?'':pill(avant.marge)}</div>
-        <div class="delta ${dcl}">${txt}</div>
       </div>
       <div class="det${ouvert===p.id?' open':''}">${detail(p,now,vj,pj)}</div>`;
     }).join('')}
@@ -210,9 +205,7 @@ function render(){
     <span><i style="background:var(--y)"></i>70 – 80 %</span>
     <span><i style="background:var(--r)"></i>moins de 70 %</span>
   </div>
-  <p class="foot">Marge brute de production : équipe salariée, direction et achats — hors frais de structure.
-    La marge « il y a 7 jours » ne retient que le temps saisi jusqu'au ${J7.toLocaleDateString('fr-FR',{day:'numeric',month:'long'})} ;
-    les coûts direction et achats, qui ne sont pas datés, sont pris à leur valeur actuelle.</p>`;
+  <p class="foot">Marge brute de production : équipe salariée, direction et achats — hors frais de structure.</p>`;
   document.querySelectorAll('.row[data-id]').forEach(r=>r.onclick=()=>{ ouvert=ouvert===r.dataset.id?null:r.dataset.id; render(); });
 }
 
