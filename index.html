@@ -165,10 +165,14 @@ function direction(pid){
 }
 function externes(pid){
   const l=arr(((PRIVE.couts||{})[pid]||{}).externes);
-  return {cout:l.reduce((s,x)=>s+(Number(x.montant)||0),0),n:l.length,lignes:l};
+  return {cout:l.reduce((s,x)=>s+(Number(x.montant)||0),0),
+n:l.length,lignes:l};
 }
 function bilan(pid,jusqua){
-  const c=ca(pid), s=salarie(pid,jusqua), d=direction(pid), x=externes(pid);
+  const s=salarie(pid,jusqua), d=direction(pid), x=externes(pid);
+  const fx=(PRIVE.factures||{})[pid];
+  const tf=fx&&!Array.isArray(fx)&&fx.total!=null&&fx.total!==''?Number(fx.total):null;
+  const c=tf!=null?tf:ca(pid);       // total facturé s'il est saisi, sinon le devis
   const dv=(PRIVE.devis||{})[pid]||{}, p=P[pid]||{};
   const horsTT=s.fact/8<1&&(dv.coutExcel||0)>0;
   const choix=p.sourceCout&&p.sourceCout!=='auto'?p.sourceCout:(horsTT?'excel':'tt');
